@@ -1,21 +1,19 @@
 package com.demo.mobileapp.service;
 
+import com.demo.mobileapp.contant.Contant;
 import com.demo.mobileapp.entity.Account;
 import com.demo.mobileapp.modal.CustomUserDetails;
-import com.demo.mobileapp.modal.ResultResponse;
 import com.demo.mobileapp.modal.register.RegisterRequest;
-import com.demo.mobileapp.modal.register.RegisterResponse;
 import com.demo.mobileapp.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -56,9 +54,9 @@ public class AccountService implements UserDetailsService {
         Account newAccount = new Account();
         newAccount.setUsername(registerRequest.getUsername());
         newAccount.setAccountId(registerRequest.getUsername().toUpperCase());
-        newAccount.setRoleId("USER");
-        newAccount.setIsDelete("N");
-        newAccount.setStatus("INIT");
+        newAccount.setRoleId(Contant.ROLE_USER);
+        newAccount.setIsDelete(Contant.STATUS_NO);
+        newAccount.setStatus(Contant.ProcessStatus.STATUS_INIT);
         newAccount.setCreateDate(new Date());
         newAccount.setLastUpdateDate(new Date());
         this.accountRepository.save(newAccount);
