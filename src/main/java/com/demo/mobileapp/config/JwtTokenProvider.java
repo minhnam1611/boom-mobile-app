@@ -1,18 +1,9 @@
 package com.demo.mobileapp.config;
 
-import com.demo.mobileapp.entity.Account;
 import com.demo.mobileapp.modal.CustomUserDetails;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.MACSigner;
-import com.nimbusds.jose.crypto.MACVerifier;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.*;
-import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.util.Date;
 
 @Component

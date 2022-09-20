@@ -1,6 +1,7 @@
 package com.demo.mobileapp.controller;
 
 import com.demo.mobileapp.config.JwtTokenProvider;
+import com.demo.mobileapp.contant.ResponseCode;
 import com.demo.mobileapp.entity.Account;
 import com.demo.mobileapp.entity.Customer;
 import com.demo.mobileapp.modal.CustomUserDetails;
@@ -52,11 +53,11 @@ public class AuthController {
         Customer checkPhone = customerService.findByPhoneNo(registerRequest.getPhoneNo());
         if (checkUsername.isPresent()) {
             RegisterResponse response = new RegisterResponse();
-            response.setResultResponse(new ResultResponse("GW002", "Tài khoản <Username> này đã tồn tại!"));
+            response.setResultResponse(new ResultResponse(ResponseCode.USERNAME_EXISTED.getCode(), ResponseCode.USERNAME_EXISTED.getDesc()));
             return response;
         } else if (checkPhone != null) {
             RegisterResponse response = new RegisterResponse();
-            response.setResultResponse(new ResultResponse("GW003", "Số điện thoại <PhoneNo> này đã tồn tại!"));
+            response.setResultResponse(new ResultResponse(ResponseCode.PHONE_NO_EXISTED.getCode(), ResponseCode.PHONE_NO_EXISTED.getDesc()));
             return response;
         } else {
             Account newAccount = accountService.createAccount(registerRequest);
@@ -68,7 +69,7 @@ public class AuthController {
             Customer newCustomer = customerService.createNewCusttomer(registerRequest, acctId);
             long custId = newCustomer.getId();
             RegisterResponse response = new RegisterResponse();
-            response.setResultResponse(new ResultResponse("000", "OK"));
+            response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
             response.setAccountId(acctId);
             response.setCustId(custId);
 
@@ -86,13 +87,13 @@ public class AuthController {
         CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername());
         if (null == customUserDetails || !new BCryptPasswordEncoder().matches(loginRequest.getPassword(), customUserDetails.getPassword())) {
             LoginResponse response = new LoginResponse();
-            response.setResultResponse(new ResultResponse("GW001", "Username or password invalid!"));
+            response.setResultResponse(new ResultResponse(ResponseCode.LOGIN_INVALID.getCode(), ResponseCode.LOGIN_INVALID.getDesc()));
             return response;
         }
         String jwt = jwtTokenProvider.generateToken(customUserDetails);
 
         LoginResponse response = new LoginResponse();
-        response.setResultResponse(new ResultResponse("000", "OK"));
+        response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
         response.setToken(jwt);
         return response;
     }
@@ -108,14 +109,14 @@ public class AuthController {
                 if (new BCryptPasswordEncoder().matches(changePasswordRequest.getOldPass(), account.getEncryptedPassword())) {
                     account.setEncryptedPassword(new BCryptPasswordEncoder().encode(changePasswordRequest.getNewPass()));
                     accountService.saveAccount(account);
-                    response.setResultResponse(new ResultResponse("000", "OK"));
+                    response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
                 } else {
-                    response.setResultResponse(new ResultResponse("GW005", "Current password invalid!"));
+                    response.setResultResponse(new ResultResponse(ResponseCode.OLD_PASS_INVALID.getCode(), ResponseCode.OLD_PASS_INVALID.getDesc()));
                 }
 
             }
         } else {
-            response.setResultResponse(new ResultResponse("GW004", "Token invalid!"));
+            response.setResultResponse(new ResultResponse(ResponseCode.TOKEN_INVALID.getCode(), ResponseCode.TOKEN_INVALID.getDesc()));
         }
         return response;
 
