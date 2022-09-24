@@ -84,7 +84,7 @@ public class AuthController {
     @Operation(summary = "API đăng nhập")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
 
-        CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername());
+        CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername().toLowerCase());
         if (null == customUserDetails || !new BCryptPasswordEncoder().matches(loginRequest.getPassword(), customUserDetails.getPassword())) {
             LoginResponse response = new LoginResponse();
             response.setResultResponse(new ResultResponse(ResponseCode.LOGIN_INVALID.getCode(), ResponseCode.LOGIN_INVALID.getDesc()));
