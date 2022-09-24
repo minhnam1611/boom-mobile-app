@@ -27,7 +27,6 @@ public class AccountController {
 
     @PostMapping("/get-account-by-token")
     @Operation(summary = "API Lấy thông tin tài khoản bằng token")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Account getAccountFromToken(@RequestParam String token) {
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Long userId = jwtTokenProvider.getUserIdFromJWT(token);
