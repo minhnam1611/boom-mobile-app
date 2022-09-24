@@ -10,7 +10,7 @@ import java.util.Date;
 public class JwtTokenProvider {
     private final String JWT_SECRET = "dangminhnamvuthithuuyennguyenthilinhphamducvuphamquocbao";
 
-    private final long JWT_EXPIRATION = 1000*60*10; //exp: 10 minutes
+    private final long JWT_EXPIRATION = 1000*60*60*3; //exp: 10 minutes
 
     public String generateToken(CustomUserDetails customUserDetails){
         Date now = new Date();
