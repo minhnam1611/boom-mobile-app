@@ -5,7 +5,7 @@ import com.demo.mobileapp.contant.ResponseCode;
 import com.demo.mobileapp.entity.Account;
 import com.demo.mobileapp.entity.Customer;
 import com.demo.mobileapp.modal.CustomUserDetails;
-import com.demo.mobileapp.modal.ResultResponse;
+import com.demo.mobileapp.modal.base.ResultResponse;
 import com.demo.mobileapp.modal.changepasword.ChangePasswordRequest;
 import com.demo.mobileapp.modal.changepasword.ChangePasswordResponse;
 import com.demo.mobileapp.modal.login.LoginRequest;
@@ -49,7 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     @Operation(summary = "API đăng ký tài Khoản")
     public RegisterResponse validateRegister(@RequestBody RegisterRequest registerRequest) {
-        Optional<Account> checkUsername = accountService.findByUserName(registerRequest.getUsername());
+        Optional<Account> checkUsername = accountService.findByUserName(registerRequest.getUsername().toLowerCase());
         Customer checkPhone = customerService.findByPhoneNo(registerRequest.getPhoneNo());
         if (checkUsername.isPresent()) {
             RegisterResponse response = new RegisterResponse();

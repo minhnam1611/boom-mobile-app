@@ -1,4 +1,4 @@
-package com.demo.mobileapp.modal;
+package com.demo.mobileapp.modal.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BaseResponse {
-    private ResultResponse resultResponse;
+public class ResultResponse {
+    private String ResponseCode;
+    private String ResponseDesc;
 }

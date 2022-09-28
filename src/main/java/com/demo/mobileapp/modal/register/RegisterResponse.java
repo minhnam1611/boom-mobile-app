@@ -1,7 +1,6 @@
 package com.demo.mobileapp.modal.register;
 
-import com.demo.mobileapp.modal.BaseResponse;
-import com.demo.mobileapp.modal.ResultResponse;
+import com.demo.mobileapp.modal.base.BaseResponse;
 import lombok.*;
 
 @Getter

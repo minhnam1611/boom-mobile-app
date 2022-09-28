@@ -1,6 +1,6 @@
 package com.demo.mobileapp.modal.login;
 
-import com.demo.mobileapp.modal.BaseResponse;
+import com.demo.mobileapp.modal.base.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,7 @@
 package com.demo.mobileapp.modal.changepasword;
 
-import com.demo.mobileapp.modal.BaseResponse;
-import com.demo.mobileapp.modal.ResultResponse;
-import lombok.AllArgsConstructor;
+import com.demo.mobileapp.modal.base.BaseResponse;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
