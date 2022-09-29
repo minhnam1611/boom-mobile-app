@@ -52,7 +52,7 @@ public class AccountService implements UserDetailsService {
 
     public Account createAccount(RegisterRequest registerRequest) {
         Account newAccount = new Account();
-        newAccount.setUsername(registerRequest.getUsername());
+        newAccount.setUsername(registerRequest.getUsername().toLowerCase());
         newAccount.setAccountId(registerRequest.getUsername().toUpperCase());
         newAccount.setRoleId(Contant.ROLE_USER);
         newAccount.setIsDelete(Contant.STATUS_NO);
