@@ -1,6 +1,7 @@
 package com.demo.mobileapp.controller;
 
 import com.demo.mobileapp.config.JwtTokenProvider;
+import com.demo.mobileapp.contant.Contant;
 import com.demo.mobileapp.contant.ResponseCode;
 import com.demo.mobileapp.entity.Account;
 import com.demo.mobileapp.entity.Customer;
@@ -83,18 +84,22 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "API đăng nhập")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-
+        LoginResponse response = new LoginResponse();
         CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername().toLowerCase());
         if (null == customUserDetails || !new BCryptPasswordEncoder().matches(loginRequest.getPassword(), customUserDetails.getPassword())) {
-            LoginResponse response = new LoginResponse();
+
             response.setResultResponse(new ResultResponse(ResponseCode.LOGIN_INVALID.getCode(), ResponseCode.LOGIN_INVALID.getDesc()));
             return response;
+        } else {
+            if (customUserDetails.getAccount().getStatus().equals(Contant.ProcessStatus.STATUS_INIT)) {
+                response.setResultResponse(new ResultResponse(ResponseCode.ACCOUNT_INIT.getCode(), ResponseCode.ACCOUNT_INIT.getDesc()));
+            } else {
+                String jwt = jwtTokenProvider.generateToken(customUserDetails);
+                response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
+                response.setToken(jwt);
+            }
         }
-        String jwt = jwtTokenProvider.generateToken(customUserDetails);
 
-        LoginResponse response = new LoginResponse();
-        response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
-        response.setToken(jwt);
         return response;
     }
 
@@ -108,6 +113,9 @@ public class AuthController {
             if (account != null) {
                 if (new BCryptPasswordEncoder().matches(changePasswordRequest.getOldPass(), account.getEncryptedPassword())) {
                     account.setEncryptedPassword(new BCryptPasswordEncoder().encode(changePasswordRequest.getNewPass()));
+                    if(account.getStatus().equals(Contant.ProcessStatus.STATUS_INIT)){
+                        account.setStatus(Contant.ProcessStatus.STATUS_ACTIVE);
+                    }
                     accountService.saveAccount(account);
                     response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
                 } else {

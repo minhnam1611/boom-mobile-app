@@ -15,7 +15,7 @@ public enum ResponseCode {
     PHONE_NO_EXISTED("GW003" , " Phone number has existed "),
     TOKEN_INVALID("GW004", "Token invalid"),
     OLD_PASS_INVALID("GW005", "Current password invalid!"),
-
+    ACCOUNT_INIT("GW006" , "Account not active, please Change Password now")
 
     
     ;

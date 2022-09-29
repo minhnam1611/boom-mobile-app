@@ -11,6 +11,7 @@ public class Contant {
 
     public static class ProcessStatus{
         public static  String STATUS_INIT = "INIT"; //INIT
+        public static String STATUS_ACTIVE = "ATV"; //ACTIVE
         public static String STATUS_COM = "COMP"; //COMPLETE
     }
 }
