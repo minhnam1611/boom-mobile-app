@@ -5,10 +5,5 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class RegisterResponse extends BaseResponse {
-    private Long custId;
-    private Long accountId;
 }

@@ -15,7 +15,7 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
 
-    public Customer createNewCusttomer(RegisterRequest registerRequest, long acctId) {
+    public Customer createNewCusttomer(RegisterRequest registerRequest, String acctId) {
 
         Customer newCust = new Customer();
         newCust.setAccountId(acctId);
@@ -32,7 +32,7 @@ public class CustomerService {
 
     }
 
-    public Customer findByAccountId(long acctId){
+    public Customer findByAccountId(String acctId){
         return customerRepository.findByAccountId(acctId);
     }
 

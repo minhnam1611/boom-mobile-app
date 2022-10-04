@@ -66,13 +66,11 @@ public class AuthController {
             int ranNum = rand.nextInt(10000) + 1;
             String newPass = "Boom$" + ranNum;
             newAccount.setEncryptedPassword(new BCryptPasswordEncoder().encode(newPass));
-            long acctId = newAccount.getId();
+            String acctId = newAccount.getAccountId();
             Customer newCustomer = customerService.createNewCusttomer(registerRequest, acctId);
-            long custId = newCustomer.getId();
             RegisterResponse response = new RegisterResponse();
             response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
-            response.setAccountId(acctId);
-            response.setCustId(custId);
+
 
             //Send Mail password
             sendEmail("Boom-Shop", newCustomer.getEmail(), SUBJECT_EMAIL, contentMailConfirmRegister(newAccount, newPass));
@@ -85,16 +83,17 @@ public class AuthController {
     @Operation(summary = "API đăng nhập")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         LoginResponse response = new LoginResponse();
-        CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername().toLowerCase());
+        CustomUserDetails customUserDetails = (CustomUserDetails) accountService.loadUserByUsername(loginRequest.getUsername().toUpperCase());
         if (null == customUserDetails || !new BCryptPasswordEncoder().matches(loginRequest.getPassword(), customUserDetails.getPassword())) {
 
             response.setResultResponse(new ResultResponse(ResponseCode.LOGIN_INVALID.getCode(), ResponseCode.LOGIN_INVALID.getDesc()));
             return response;
         } else {
+            String jwt = jwtTokenProvider.generateToken(customUserDetails);
             if (customUserDetails.getAccount().getStatus().equals(Contant.ProcessStatus.STATUS_INIT)) {
                 response.setResultResponse(new ResultResponse(ResponseCode.ACCOUNT_INIT.getCode(), ResponseCode.ACCOUNT_INIT.getDesc()));
+                response.setToken(jwt);
             } else {
-                String jwt = jwtTokenProvider.generateToken(customUserDetails);
                 response.setResultResponse(new ResultResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc()));
                 response.setToken(jwt);
             }
@@ -113,7 +112,9 @@ public class AuthController {
             if (account != null) {
                 if (new BCryptPasswordEncoder().matches(changePasswordRequest.getOldPass(), account.getEncryptedPassword())) {
                     account.setEncryptedPassword(new BCryptPasswordEncoder().encode(changePasswordRequest.getNewPass()));
-                    if(account.getStatus().equals(Contant.ProcessStatus.STATUS_INIT)){
+                    if (account.getStatus().equals(Contant.ProcessStatus.STATUS_INIT)) {
+                        Customer customer = customerService.findByAccountId(account.getAccountId());
+                        customer.setStatus(Contant.ProcessStatus.STATUS_ACTIVE);
                         account.setStatus(Contant.ProcessStatus.STATUS_ACTIVE);
                     }
                     accountService.saveAccount(account);

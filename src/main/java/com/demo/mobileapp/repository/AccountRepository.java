@@ -31,5 +31,7 @@ public interface AccountRepository extends BaseRepository<Account, Long> {
     @Query(value = "SELECT * FROM Account WHERE role_id = ?1",nativeQuery = true)
     List<Account> getAccountByRoleId(String roleId);
 
+//    void clearAccountInit();
+
     Optional<Account> findAccountById(Integer id);
 }

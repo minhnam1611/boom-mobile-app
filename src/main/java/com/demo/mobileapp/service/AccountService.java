@@ -52,7 +52,7 @@ public class AccountService implements UserDetailsService {
 
     public Account createAccount(RegisterRequest registerRequest) {
         Account newAccount = new Account();
-        newAccount.setUsername(registerRequest.getUsername().toLowerCase());
+        newAccount.setUsername(registerRequest.getUsername().toUpperCase());
         newAccount.setAccountId(registerRequest.getUsername().toUpperCase());
         newAccount.setRoleId(Contant.ROLE_USER);
         newAccount.setIsDelete(Contant.STATUS_NO);
@@ -63,7 +63,9 @@ public class AccountService implements UserDetailsService {
         return newAccount;
     }
 
+    public void clearAcountInit(){
 
+    }
 
     public Optional<Account> findAccountById(Long accountId) {
         return this.accountRepository.findById(accountId);

@@ -27,7 +27,7 @@ public class Customer {
     private String email;
 
     @Column(name = "ACCOUNT_ID",length = 20)
-    private long accountId;
+    private String accountId;
 
     @Column(name = "STATUS",length = 20)
     private String status;
@@ -44,7 +44,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(long id, String fullName, String address, String phoneNo, String email, long accountId, String isDelete, Date createDate, Date lastUpdateDate) {
+    public Customer(long id, String fullName, String address, String phoneNo, String email, String accountId, String isDelete, Date createDate, Date lastUpdateDate) {
         this.id = id;
         this.fullName = fullName;
         this.address = address;
@@ -104,11 +104,11 @@ public class Customer {
         this.email = email;
     }
 
-    public long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(long accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
